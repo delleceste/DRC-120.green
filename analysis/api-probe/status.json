@@ -1,0 +1,14 @@
+{
+  "url": "http://127.0.0.1:4735",
+  "successful_endpoints": [
+    "/doc.json",
+    "/measurements",
+    "/measurements/commands",
+    "/measurements/process-commands",
+    "/measurements/arithmetic-functions",
+    "/measurements/impulse-response/units"
+  ],
+  "errors": {
+    "/application": "HTTP Error 404: Not Found"
+  }
+}

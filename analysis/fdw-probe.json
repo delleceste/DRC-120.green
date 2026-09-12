@@ -1,0 +1,42 @@
+{
+  "cycles": 8,
+  "status": "unvalidated diagnostic",
+  "band_hz": [
+    20,
+    225
+  ],
+  "channels": {
+    "L": {
+      "raw_sha256": "3a64b49ce81d05900181f8bd67044968250ac47703e35c244726249aa5e6ad31",
+      "fdw_sha256": "3a64b49ce81d05900181f8bd67044968250ac47703e35c244726249aa5e6ad31",
+      "wav_bytes_identical": true,
+      "wav_samples_identical": true,
+      "fitted_level_offset_db": 99.26126024871948,
+      "residual_rms_db": 0.9418396425002383,
+      "residual_max_abs_db": 3.4646354976018046,
+      "reference_smoothing": "1/48 octave; 96 points per octave",
+      "limitations": [
+        "fixed windows not independently verified",
+        "microphone calibration not applied",
+        "reference display smoothing not reproduced",
+        "reference time assumed at integer sample peak"
+      ]
+    },
+    "R": {
+      "raw_sha256": "faffd5d874fe3876a25791abd1515e142d6ac84b5c883227555fa4fbdadd86e8",
+      "fdw_sha256": "faffd5d874fe3876a25791abd1515e142d6ac84b5c883227555fa4fbdadd86e8",
+      "wav_bytes_identical": true,
+      "wav_samples_identical": true,
+      "fitted_level_offset_db": 99.0907933136196,
+      "residual_rms_db": 0.975366985717211,
+      "residual_max_abs_db": 4.190332127827446,
+      "reference_smoothing": "1/48 octave; 96 points per octave",
+      "limitations": [
+        "fixed windows not independently verified",
+        "microphone calibration not applied",
+        "reference display smoothing not reproduced",
+        "reference time assumed at integer sample peak"
+      ]
+    }
+  }
+}

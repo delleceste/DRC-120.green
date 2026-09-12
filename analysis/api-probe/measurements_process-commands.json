@@ -1,0 +1,15 @@
+[
+  "Align SPL",
+  "Time align",
+  "Align IR start",
+  "Cross corr align",
+  "Vector average",
+  "RMS average",
+  "dB average",
+  "Magn plus phase average",
+  "dB plus phase average",
+  "Vector sum",
+  "Smooth",
+  "Arithmetic",
+  "Remove IR delays"
+]
