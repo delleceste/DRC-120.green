@@ -1,0 +1,46 @@
+# Project defaults for this room (120.green, multi-point FDW build). Picked
+# up automatically by rew_pipeline.py -- no --config flag needed. See
+# rew_pipeline.example.toml for the full field reference, and
+# ../DRC-doc/REW-INVERSION.md, "Part V -- Automating the procedure".
+#
+# Everything here can still be overridden on the command line for a
+# one-off experiment; edit this file for a change you want to keep.
+
+[measurements]
+center_l = "L.0"
+center_r = "R.0"
+pos_l_pattern = "L 120.green.{n}"
+pos_r_pattern = "R 120.green.{n}"
+num_positions = 4
+x801_title = "X801"
+x801_wav = "X801.wav"
+x801_spl_offset_db = 3.0
+x801_window_type = "Tukey 0.25"
+x801_left_window_ms = 100.0
+x801_right_window_ms = 500.0
+
+[fdw]
+cycles = 8.0
+
+[target]
+# No hand-tuned target is kept loaded between runs (see IMPLEMENTATION-STATUS.md),
+# so this is built fresh each run from LX/RX -- give it its own tag-independent
+# name to reuse across FDW experiments instead, if you tune one you like:
+#   target_title = "Target.blessed"
+target_title = "Target.harman.fuller"
+lf_cutoff_hz = 10.0
+lf_slope_db_per_oct = 24.0
+house_curve = "../DRC-doc/house-curve-harman-fuller.txt"
+
+[minphase1]
+lf_tail_corner_hz = 16.0
+lf_tail_slope_db_per_oct = 12.0
+
+[minphase2]
+lf_tail_corner_hz = 16.0
+lf_tail_slope_db_per_oct = 0.0
+
+[division]
+common_low_hz = 25.0
+common_split_hz = 80.0
+upper_hz = 225.0
