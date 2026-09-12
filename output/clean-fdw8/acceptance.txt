@@ -1,0 +1,46 @@
+========================================================================
+output/clean-fdw8/FLX-trimmed-48k.wav
+  131072 taps @ 48000 Hz = 2731 ms   peak at 8192 (170.7 ms latency)
+  FFT bin = 0.3662 Hz    pre-peak energy 31.69 %
+  PASS sharpest feature < 200 Hz  : Q 8.6  (11.37 Hz wide at 98.14 Hz, 31.0 bins)
+       threshold Q <= 12   (bins are length-dependent, reported for reference only)
+  PASS group delay 20-200 Hz     : -7.8 ms at 84.96 Hz
+       threshold <= 10 ms
+  FAIL gated-tone tails         : worst 118 ms at 79 Hz
+       tone            tail   spread    control      limit
+         28.7 Hz       86 ms    101      124 ms      373 ms  <-- noisy
+         40.0 Hz       38 ms     22       89 ms      267 ms
+         51.2 Hz       27 ms     16       60 ms      180 ms
+         63.0 Hz       18 ms      2       60 ms      179 ms
+         79.0 Hz      118 ms     15       34 ms      103 ms  <-- FAIL
+        100.0 Hz       85 ms      0        6 ms      100 ms
+        116.5 Hz       54 ms      0       26 ms      100 ms
+        128.2 Hz       54 ms     50       19 ms      100 ms  <-- noisy
+        145.5 Hz       20 ms      1        6 ms      100 ms
+        180.0 Hz       26 ms     41        3 ms      100 ms  <-- noisy
+       tail = median over 9 tone lengths; spread = IQR.
+  RESULT: FAIL
+========================================================================
+output/clean-fdw8/FRX-trimmed-48k.wav
+  131072 taps @ 48000 Hz = 2731 ms   peak at 8192 (170.7 ms latency)
+  FFT bin = 0.3662 Hz    pre-peak energy 31.76 %
+  PASS sharpest feature < 200 Hz  : Q 9.2  (8.87 Hz wide at 81.30 Hz, 24.2 bins)
+       threshold Q <= 12   (bins are length-dependent, reported for reference only)
+  PASS group delay 20-200 Hz     : -8.9 ms at 81.30 Hz
+       threshold <= 10 ms
+  FAIL gated-tone tails         : worst 107 ms at 100 Hz
+       tone            tail   spread    control      limit
+         28.7 Hz       40 ms     99      124 ms      373 ms  <-- noisy
+         40.0 Hz       49 ms     53       89 ms      267 ms  <-- noisy
+         51.2 Hz       18 ms     19       60 ms      180 ms
+         63.0 Hz        5 ms     39       60 ms      179 ms  <-- noisy
+         79.0 Hz       82 ms     12       34 ms      103 ms
+        100.0 Hz      107 ms      0        6 ms      100 ms  <-- FAIL
+        116.5 Hz       57 ms      1       26 ms      100 ms
+        128.2 Hz       48 ms      2       19 ms      100 ms
+        145.5 Hz       24 ms      1        6 ms      100 ms
+        180.0 Hz       16 ms      0        3 ms      100 ms
+       tail = median over 9 tone lengths; spread = IQR.
+  RESULT: FAIL
+
+FAILURES PRESENT

@@ -1,0 +1,56 @@
+{
+  "FLX": {
+    "generated": "output/clean-fdw8/FLX-trimmed-48k.wav",
+    "manual": "120.green.multipt.FDW8.txts/FLX-trimmed-48k.wav",
+    "generated_sha256": "ac5b347d5a9b9834879633de8b1c336bcfd320bda65f61a4d04c68dc43e0b28f",
+    "manual_sha256": "f5ebcced681ba9e6e03b69b4bd2ade3d74551dc014fe7370c881ff535f5be747",
+    "byte_identical": false,
+    "sample_rate_hz": 48000,
+    "generated_samples": 131072,
+    "manual_samples": 131072,
+    "generated_peak_sample": 8192,
+    "manual_peak_sample": 8192,
+    "peak_delta_samples": 0,
+    "best_manual_over_generated_scale": 0.9559887089966846,
+    "best_scale_db": -0.3909447412853786,
+    "scaled_sample_residual_rms": 0.0008208325617228574,
+    "scaled_sample_residual_peak": 0.08474658747920322,
+    "magnitude_delta_20_225_db": {
+      "median": -0.008608527698481638,
+      "rms": 0.03605319583083229,
+      "max_abs": 0.2002261828777324
+    },
+    "phase_delta_20_225_deg": {
+      "median": -0.31302752835389247,
+      "rms": 0.5201865622890854,
+      "max_abs": 3.4319106252957674
+    }
+  },
+  "FRX": {
+    "generated": "output/clean-fdw8/FRX-trimmed-48k.wav",
+    "manual": "120.green.multipt.FDW8.txts/FRX-trimmed-48k.wav",
+    "generated_sha256": "711799626b94f89c46322583b6c8ea76f60a51ff70c851e84cda9fea2140b9f9",
+    "manual_sha256": "dc1796de3a1d4c656390b579d16045946da89714bce33d557de162b18b235d33",
+    "byte_identical": false,
+    "sample_rate_hz": 48000,
+    "generated_samples": 131072,
+    "manual_samples": 131072,
+    "generated_peak_sample": 8192,
+    "manual_peak_sample": 8192,
+    "peak_delta_samples": 0,
+    "best_manual_over_generated_scale": 0.989199115198646,
+    "best_scale_db": -0.09432561541249095,
+    "scaled_sample_residual_rms": 0.00040698321090704544,
+    "scaled_sample_residual_peak": 0.022700590837400114,
+    "magnitude_delta_20_225_db": {
+      "median": -0.008799583892776647,
+      "rms": 0.04152733850099225,
+      "max_abs": 0.23242495677526467
+    },
+    "phase_delta_20_225_deg": {
+      "median": -0.011888008235119435,
+      "rms": 0.27764628074097464,
+      "max_abs": 1.9556937062559265
+    }
+  }
+}
