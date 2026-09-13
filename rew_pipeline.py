@@ -168,8 +168,14 @@ def clean_tag(client, tag, num_positions):
         *(f'SUM.{i}' for i in range(num_positions + 1)),
         'L-SP', 'R-SP', 'SUM-SP', 'LX', 'RX', 'LX-MP', 'RX-MP', 'SUM-SP-MP',
         'L-R RMS average', 'F.common', 'Fper_L', 'Fper_R', 'FL', 'FR',
+        'PEQ.82', 'PEQ.530', 'PEQ.both', 'FL.exp', 'FR.exp',
         'LFilter', 'RFilter', 'FLX', 'FRX', 'FLX-trimmed', 'FRX-trimmed',
+        'LFilter.baseline', 'RFilter.baseline', 'FLX.baseline', 'FRX.baseline',
+        'FLX-trimmed.baseline', 'FRX-trimmed.baseline',
         'L.nofdw', 'R.nofdw', 'L.filtered', 'R.filtered', 'LR.filtered', 'LR',
+        'L.filtered.baseline', 'R.filtered.baseline', 'LR.filtered.baseline',
+        'L.filtered.eq82', 'R.filtered.eq82', 'LR.filtered.eq82',
+        'L.filtered.eq530', 'R.filtered.eq530', 'LR.filtered.eq530',
     }
     owned_titles = {tagged(role, tag) for role in roles}
     stale = [summary for summary in client.measurements().values()
@@ -178,6 +184,38 @@ def clean_tag(client, tag, num_positions):
         print(f'Removing {len(stale)} stale measurements from prior {tag!r} run ...')
         for summary in stale:
             client.delete_measurement(summary['uuid'])
+
+
+def retain_raw_inputs(client, args):
+    """Discard every loaded trace except the named raw input measurements.
+
+    This is deliberately opt-in: it removes targets, prior arithmetic,
+    filters, response copies and imported X801 so the pipeline reconstructs
+    the complete design from raw captures plus the configured X801 WAV.
+    """
+    keep = {args.center_l, args.center_r,
+            *(args.pos_l_pattern.format(n=n) for n in range(1, args.num_positions + 1)),
+            *(args.pos_r_pattern.format(n=n) for n in range(1, args.num_positions + 1))}
+    if args.sum_c_title:
+        keep.add(args.sum_c_title)
+    stale = [summary for summary in client.measurements().values()
+             if summary['title'] not in keep]
+    if stale:
+        print(f'Removing {len(stale)} non-raw measurements from input session ...')
+        locked = []
+        for summary in stale:
+            try:
+                client.delete_measurement(summary['uuid'])
+            except RewError as exc:
+                if 'is locked and cannot be deleted' not in str(exc):
+                    raise
+                locked.append(summary['title'])
+        if locked:
+            print('  REW API retained locked trace(s), which are excluded from the build: '
+                  + ', '.join(repr(title) for title in locked))
+    missing = keep - client.titles().keys()
+    if missing:
+        raise RewError(f'Raw-only cleanup is missing required inputs: {sorted(missing)}')
 
 
 def response_band(client, uuid, low=20.0, high=225.0, ppo=96):
@@ -477,12 +515,18 @@ def run_pipeline(args):
     client.set_blocking(True)
 
     if args.session:
+        if args.replace_session:
+            print('Closing all currently loaded measurements before loading input session ...')
+            client.delete_all_measurements()
         titles = client.titles()
         if args.center_l not in titles:
             print(f'Loading session {args.session} ...')
             client.load(str(args.session.resolve()))
         else:
             print(f'Session measurements already present, not reloading {args.session}')
+
+    if args.raw_only_session:
+        retain_raw_inputs(client, args)
 
     tag = args.tag
     t = lambda name: tagged(name, tag)
@@ -570,15 +614,35 @@ def run_pipeline(args):
     fl = build(client, t('FL'), lambda: client.arithmetic('A * B', f_common, fper_l))
     fr = build(client, t('FR'), lambda: client.arithmetic('A * B', f_common, fper_r))
 
+    peq82 = peq530 = peq_both = None
+    fl_for_final, fr_for_final = fl, fr
+    if args.refinement_peq:
+        print(f'Building refinement PEQs: {args.peq82_frequency:g} Hz '
+              f'{args.peq82_gain:+g} dB Q {args.peq82_q:g}; '
+              f'{args.peq530_frequency:g} Hz {args.peq530_gain:+g} dB '
+              f'Q {args.peq530_q:g} ...')
+        pk82 = {'type': 'PK', 'frequency': args.peq82_frequency,
+                'gaindB': args.peq82_gain, 'q': args.peq82_q}
+        pk530 = {'type': 'PK', 'frequency': args.peq530_frequency,
+                 'gaindB': args.peq530_gain, 'q': args.peq530_q}
+        # Generate all three responses explicitly so REW can show the two
+        # experiments separately as well as their combined candidate.
+        peq82 = build(client, t('PEQ.82'), lambda: client.generate_filters_measurement(fl, [pk82]))
+        peq530 = build(client, t('PEQ.530'), lambda: client.generate_filters_measurement(fr, [pk530]))
+        peq_both = build(client, t('PEQ.both'),
+                         lambda: client.generate_filters_measurement(fl, [pk82, pk530]))
+        fl_for_final = build(client, t('FL.exp'), lambda: client.arithmetic('A * B', fl, peq_both))
+        fr_for_final = build(client, t('FR.exp'), lambda: client.arithmetic('A * B', fr, peq_both))
+
     lf2 = (args.lf2_corner, args.lf2_slope)
     hf2 = (args.hf2_corner, args.hf2_slope) if args.hf2_corner is not None else None
     print(f'Minimum phase #2: cal excluded, LF tail {args.lf2_corner:g} Hz @ {args.lf2_slope:g} dB/oct, '
           f'HF tail {"off" if hf2 is None else f"{args.hf2_corner:g} Hz @ {args.hf2_slope:g} dB/oct"} ...')
     lfilter = build(client, t('LFilter'), lambda: client.minimum_phase_version(
-        fl, include_cal=False, lf_tail=lf2, hf_tail=hf2,
+        fl_for_final, include_cal=False, lf_tail=lf2, hf_tail=hf2,
         frequency_warping=args.hf2_warping, replicate_data=args.replicate_data))
     rfilter = build(client, t('RFilter'), lambda: client.minimum_phase_version(
-        fr, include_cal=False, lf_tail=lf2, hf_tail=hf2,
+        fr_for_final, include_cal=False, lf_tail=lf2, hf_tail=hf2,
         frequency_warping=args.hf2_warping, replicate_data=args.replicate_data))
 
     print('Baking crossover correction in, last (X801 x LFilter/RFilter) ...')
@@ -627,6 +691,40 @@ def run_pipeline(args):
     lr_filtered = build(client, t('LR.filtered'), lambda: client.vector_average([l_filtered, r_filtered]))
     raw_lr = build(client, t('LR'), lambda: client.vector_average([raw_l, raw_r]))
 
+    baseline = {}
+    variants = {}
+    if args.refinement_peq:
+        # REW defaults to at most 60 loaded measurements. These construction
+        # traces have already been folded into the spatial divisors and MP
+        # responses, so release their slots for the comparison families while
+        # retaining raw captures, common/per-channel filters, target, finished
+        # filters and every result the user needs to inspect.
+        print('Removing disposable construction traces to make room for comparisons ...')
+        for uuid in [*sum_idx, lx, rx]:
+            client.delete_measurement(uuid)
+        print('Building baseline and per-experiment predictions for side-by-side REW comparison ...')
+        # The base finished response is reconstructed through the same MP/X801/
+        # trim sequence as the experimental candidate, but without either PEQ.
+        blf = build(client, t('LFilter.baseline'), lambda: client.minimum_phase_version(
+            fl, include_cal=False, lf_tail=lf2, hf_tail=hf2,
+            frequency_warping=args.hf2_warping, replicate_data=args.replicate_data))
+        brf = build(client, t('RFilter.baseline'), lambda: client.minimum_phase_version(
+            fr, include_cal=False, lf_tail=lf2, hf_tail=hf2,
+            frequency_warping=args.hf2_warping, replicate_data=args.replicate_data))
+        bflx = build(client, t('FLX.baseline'), lambda: client.arithmetic('A * B', x801, blf))
+        bfrx = build(client, t('FRX.baseline'), lambda: client.arithmetic('A * B', x801, brf))
+        bflxt = build(client, t('FLX-trimmed.baseline'), lambda: client.trim_to_windows(bflx))
+        bfrxt = build(client, t('FRX-trimmed.baseline'), lambda: client.trim_to_windows(bfrx))
+        bl = build(client, t('L.filtered.baseline'), lambda: client.arithmetic('A * B', raw_l, bflxt))
+        br = build(client, t('R.filtered.baseline'), lambda: client.arithmetic('A * B', raw_r, bfrxt))
+        blr = build(client, t('LR.filtered.baseline'), lambda: client.vector_average([bl, br]))
+        baseline = {'L': bl, 'R': br, 'LR': blr}
+        for label, peq in (('eq82', peq82), ('eq530', peq530)):
+            vl = build(client, t(f'L.filtered.{label}'), lambda peq=peq: client.arithmetic('A * B', bl, peq))
+            vr = build(client, t(f'R.filtered.{label}'), lambda peq=peq: client.arithmetic('A * B', br, peq))
+            vlr = build(client, t(f'LR.filtered.{label}'), lambda vl=vl, vr=vr: client.vector_average([vl, vr]))
+            variants[label] = {'L': vl, 'R': vr, 'LR': vlr}
+
     # open-media-drc's new_filter_design.py resolves these exact names (case-
     # insensitive, ".txt" optional): L/R/LR before correction, L.filtered/
     # R.filtered/LR.filtered after -- see FILTERS_AND_DRC.md and
@@ -651,6 +749,8 @@ def run_pipeline(args):
             'LFilter': lfilter, 'RFilter': rfilter, 'FLX': flx, 'FRX': frx,
             'FLX-trimmed': flx_trimmed, 'FRX-trimmed': frx_trimmed,
             'L.Filtered': l_filtered, 'R.Filtered': r_filtered, 'LR.Filtered': lr_filtered,
+            'PEQ.82': peq82, 'PEQ.530': peq530, 'PEQ.both': peq_both,
+            'baseline': baseline, 'individual_variants': variants,
         },
     }
     (args.output / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
@@ -795,6 +895,13 @@ _CONFIG_KEYS = {
     ('division', 'common_low_hz'): 'common_low',
     ('division', 'common_split_hz'): 'common_split',
     ('division', 'upper_hz'): 'upper',
+    ('experiments', 'enabled'): 'refinement_peq',
+    ('experiments', 'peq82_frequency_hz'): 'peq82_frequency',
+    ('experiments', 'peq82_gain_db'): 'peq82_gain',
+    ('experiments', 'peq82_q'): 'peq82_q',
+    ('experiments', 'peq530_frequency_hz'): 'peq530_frequency',
+    ('experiments', 'peq530_gain_db'): 'peq530_gain',
+    ('experiments', 'peq530_q'): 'peq530_q',
     ('fdw', 'cycles'): 'fdw_cycles',
     ('export', 'geometry'): 'geometry',
     ('export', 'name'): 'export_name',
@@ -845,6 +952,10 @@ def parse_args():
     p.add_argument('--api-url', default='http://127.0.0.1:4735')
     p.add_argument('--session', type=Path, default=None,
                    help='mdat to load if the raw captures are not already present')
+    p.add_argument('--replace-session', action='store_true',
+                   help='remove all currently loaded REW measurements before loading --session')
+    p.add_argument('--raw-only-session', action='store_true',
+                   help='after loading, retain only the configured raw L/R captures and simultaneous centre sum')
     p.add_argument('--tag', required=True,
                    help='suffix for measurements this run creates, e.g. "fdw12" -> "LX [fdw12]"; '
                         'reruns with the same tag replace their own prior measurements')
@@ -926,6 +1037,15 @@ def parse_args():
     p.add_argument('--common-split', type=float, default=80.0)
     p.add_argument('--upper', type=float, default=225.0)
 
+    p.add_argument('--refinement-peq', action='store_true',
+                   help='add the 82 Hz and 530 Hz cut experiments and retain baseline/individual predictions in REW')
+    p.add_argument('--peq82-frequency', type=float, default=82.0)
+    p.add_argument('--peq82-gain', type=float, default=-1.0)
+    p.add_argument('--peq82-q', type=float, default=2.0)
+    p.add_argument('--peq530-frequency', type=float, default=530.0)
+    p.add_argument('--peq530-gain', type=float, default=-1.5)
+    p.add_argument('--peq530-q', type=float, default=2.0)
+
     p.add_argument('--verify', action='store_true', default=True,
                    help='run the step-6a |H| preservation check after each minimum-phase pass (default on)')
     p.add_argument('--no-verify', dest='verify', action='store_false')
@@ -954,6 +1074,12 @@ def parse_args():
                 f'must match {_SAFE_NAME.pattern}')
     if not 0 < args.common_low < args.common_split < args.upper:
         p.error('require 0 < common-low < common-split < upper')
+    if args.replace_session and args.session is None:
+        p.error('--replace-session requires --session')
+    if args.peq82_gain > 0 or args.peq530_gain > 0:
+        p.error('refinement PEQs must be cut-only (gain <= 0 dB)')
+    if args.peq82_q <= 0 or args.peq530_q <= 0:
+        p.error('refinement PEQ Q values must be positive')
     if (args.hf1_corner is not None and args.hf1_slope > 0) or (args.hf2_corner is not None and args.hf2_slope > 0):
         p.error('hf tail slope must be <= 0 dB/octave')
     return args

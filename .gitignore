@@ -1,0 +1,8 @@
+__pycache__/
+
+# Local PEQ experiment scratch files; the canonical pipeline-generated
+# filters and saved REW session live under output/clean-fdw6-peq/DRC-120.green/.
+/FLX-trimmed-manual-48k.wav
+/FRX-trimmed-manual-48k.wav
+/output/clean-fdw6-peq/source-clean-fdw8.mdat
+/output/clean-fdw6-peq/DRC-120.green/120.green.clean-fdw6-peq82-530-CODEX.mdat

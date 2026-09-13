@@ -103,6 +103,9 @@ class RewClient:
     def delete_measurement(self, index):
         self.delete(f'/measurements/{index}')
 
+    def delete_all_measurements(self):
+        self.delete('/measurements')
+
     def load(self, *mdat_paths):
         self.post('/measurements/command', {
             'command': 'Load',
@@ -259,6 +262,43 @@ class RewClient:
         if len(new) > 1:
             raise RewError(f'Expected at most one new measurement from {command!r}, got {new}')
         return new[0] if new else None
+
+    def filters(self, index):
+        return self.get(f'/measurements/{index}/filters')
+
+    def set_filters(self, index, filters):
+        """Replace the enabled EQ rows on a measurement.
+
+        ``filters`` is a sequence of REW FilterSetting dictionaries. Rows not
+        supplied are reset to ``None`` so a source session's manual EQ cannot
+        leak into an automated build.
+        """
+        capacity = len(self.filters(index))
+        if len(filters) > capacity:
+            raise RewError(f'Equaliser offers {capacity} rows, got {len(filters)} filters')
+        rows = []
+        for i in range(1, capacity + 1):
+            if i <= len(filters):
+                rows.append({'index': i, 'enabled': True, 'isAuto': False,
+                             **filters[i - 1]})
+            else:
+                rows.append({'index': i, 'type': 'None', 'enabled': True, 'isAuto': True})
+        self.post(f'/measurements/{index}/filters', {'filters': rows})
+        actual = self.filters(index)
+        for expected, got in zip(rows[:len(filters)], actual[:len(filters)]):
+            for key, value in expected.items():
+                if got.get(key) != value:
+                    raise RewError(f'REW did not retain filter setting {expected}: got {got}')
+
+    def generate_filters_measurement(self, index, filters, rename_to=None):
+        """Install explicit EQ rows and generate their standalone response."""
+        self.set_filters(index, filters)
+        result = self.eq_command(index, 'Generate filters measurement')
+        if result is None:
+            raise RewError('Generate filters measurement produced no measurement')
+        if rename_to is not None:
+            self.rename(result, rename_to)
+        return result
 
     def house_curve(self, path, log_interpolation=True):
         """Set (or, with an empty string, clear) the house curve file path.

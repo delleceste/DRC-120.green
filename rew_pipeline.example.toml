@@ -76,6 +76,17 @@ common_low_hz = 25.0
 common_split_hz = 80.0
 upper_hz = 225.0
 
+[experiments]
+# Optional broad, common L/R cuts retained alongside the baseline and each
+# individual variant in REW. The deployable output contains both when enabled.
+enabled = false
+peq82_frequency_hz = 82.0
+peq82_gain_db = -1.0
+peq82_q = 2.0
+peq530_frequency_hz = 530.0
+peq530_gain_db = -1.5
+peq530_q = 2.0
+
 [export]
 # What the finished design is called on disk, and therefore how
 # open-media-drc's importer reads it back: --output/DRC-<geometry>/ holds

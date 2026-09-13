@@ -1,0 +1,152 @@
+{
+  "parameters": {
+    "config": "rew_pipeline.toml",
+    "api_url": "http://127.0.0.1:4735",
+    "session": "output/clean-fdw6-peq/source-clean-fdw8.mdat",
+    "replace_session": true,
+    "raw_only_session": true,
+    "tag": "clean-fdw6-peq",
+    "output": "output/clean-fdw6-peq",
+    "geometry": "120.green",
+    "export_name": "120.green.clean-fdw6-peq",
+    "acceptance": "../DRC-doc/drc_acceptance.py",
+    "plot": false,
+    "save_mdat": "-",
+    "fdw_cycles": 6.0,
+    "center_l": "L.0",
+    "center_r": "R.0",
+    "sum_c_title": null,
+    "pos_l_pattern": "L 120.green.{n}",
+    "pos_r_pattern": "R 120.green.{n}",
+    "num_positions": 4,
+    "x801_title": "X801",
+    "x801_wav": "X801.wav",
+    "x801_spl_offset": 3.0,
+    "x801_window_type": "Tukey 0.25",
+    "x801_left_window_ms": 100.0,
+    "x801_right_window_ms": 500.0,
+    "target_title": "Target.harman.fuller",
+    "target_lf_cutoff": 10.0,
+    "target_lf_slope": 24.0,
+    "house_curve": "../DRC-doc/house-curve-harman-fuller.txt",
+    "house_curve_log_interpolation": true,
+    "lf1_corner": 16.0,
+    "lf1_slope": 12.0,
+    "hf1_corner": null,
+    "hf1_slope": -18.0,
+    "hf1_warping": false,
+    "lf2_corner": 16.0,
+    "lf2_slope": 0.0,
+    "hf2_corner": null,
+    "hf2_slope": -18.0,
+    "hf2_warping": false,
+    "replicate_data": false,
+    "common_low": 25.0,
+    "common_split": 80.0,
+    "upper": 225.0,
+    "refinement_peq": true,
+    "peq82_frequency": 82.0,
+    "peq82_gain": -1.0,
+    "peq82_q": 2.0,
+    "peq530_frequency": 530.0,
+    "peq530_gain": -1.5,
+    "peq530_q": 2.0,
+    "verify": true,
+    "design": "clean-fdw6-peq"
+  },
+  "x801_spl_offset": {
+    "before_db": 120.0,
+    "adjustment_db": -117.0,
+    "after_db": 3.0
+  },
+  "x801_windows": {
+    "before": {
+      "leftWindowType": "Rectangular",
+      "rightWindowType": "Rectangular",
+      "leftWindowWidthms": 500.0,
+      "rightWindowWidthms": 1000.0,
+      "refTimems": 0.0,
+      "addFDW": false,
+      "addMTW": false
+    },
+    "after": {
+      "leftWindowType": "Tukey 0.25",
+      "rightWindowType": "Tukey 0.25",
+      "leftWindowWidthms": 99.99999999999999,
+      "rightWindowWidthms": 500.0,
+      "refTimems": 0.0,
+      "addFDW": false,
+      "addMTW": false
+    }
+  },
+  "measurement_uuids": {
+    "raw_l_no_fdw": "92a1216e-28e4-41ec-93b5-d7da3d1fb33f",
+    "raw_r_no_fdw": "aa462e00-55d7-47a5-ac23-e234eeaa90bc",
+    "raw_lr_no_fdw": "3b6aa3f5-c9b1-4c22-a2fa-2216f7b70ef8",
+    "centre_l": "c77eaec6-91d0-466a-86d5-19d778af17f8",
+    "centre_r": "b4b1713c-4c22-4315-a6e0-d37ced2a4f45",
+    "pos_l": [
+      "021a9734-c154-4edd-85b9-c6324aa9d2e9",
+      "e4fa623b-5dcf-4a95-82f1-85d8aa21dbc9",
+      "3c1baa1c-58a5-4f5a-976c-b67b15fbcb0b",
+      "bc08884f-f082-42ad-9061-2916775b0e3f"
+    ],
+    "pos_r": [
+      "17d2b8db-976f-41a2-964d-427753b561b2",
+      "41fe2126-5754-4bef-9f4f-deac3b4a9679",
+      "07c59300-a67d-4348-8cb9-30b6220e14e6",
+      "1a2398cd-c499-43ef-b2cb-c8906d7f9c6f"
+    ],
+    "sum_positions": [
+      "1273104f-7d99-4dcc-8420-736c278be4b8",
+      "ca8038fa-f0de-4358-8929-0b0034170b48",
+      "5d7fc022-dee2-4e4e-959b-fa51fc9979fc",
+      "af6d181d-7224-4207-9722-874c3fa7f442",
+      "734d5677-dbbf-48f1-8090-2db83d882f33"
+    ],
+    "L-SP": "7374b795-4e4d-4384-8bf2-eccca4740cad",
+    "R-SP": "1f19a585-b142-47ef-94e9-59ae232a0a00",
+    "SUM-SP": "1468d03a-651a-4238-a47c-0990110e4b5d",
+    "LX": "89ddb6da-37c0-46fa-aa53-2858dad72e72",
+    "RX": "cb037950-03bf-4115-9591-d6bab73ea856",
+    "LX-MP": "07d01f74-78ca-40fa-9825-a227e687c4b9",
+    "RX-MP": "50035a18-e40d-4a6d-a08c-72afada0de24",
+    "SUM-SP-MP": "f623e5b3-93b0-47a5-93f1-855eacc935e5",
+    "target": "425a50fb-1bc6-4d44-a126-b71b728cf043",
+    "x801": "9961516f-469e-43c0-a83d-350e9951863e",
+    "F.common": "264208fa-00c9-4bc2-9e50-a33b5f434f9a",
+    "Fper_L": "be1c50b1-19f3-4fc5-b347-ae3b6778eedd",
+    "Fper_R": "58b23188-e829-4fd1-a8d5-e2cc9d3f7e41",
+    "FL": "84343e55-4a8c-4cad-8d22-88115468a759",
+    "FR": "8b566bd4-c59f-4fd1-8166-ce072e2c258c",
+    "LFilter": "ce1baa1b-b9ba-4099-bd14-fe3b41c2ab8e",
+    "RFilter": "0b97f5c2-63ee-478e-b5d3-dde948d2cfc7",
+    "FLX": "0e8fa511-c12e-4197-93c4-f6a5d9d499d0",
+    "FRX": "2c0eda92-91a0-4d5c-9682-38ddbafa81d7",
+    "FLX-trimmed": "1ac3ed2e-fc95-468a-815d-af64e445633a",
+    "FRX-trimmed": "5b06360e-8cd1-489d-8132-4d9736fada92",
+    "L.Filtered": "186deba0-cbab-4d36-ad78-2cb4c056a7bc",
+    "R.Filtered": "7e7ffd0f-409a-4ea4-9b14-d7aa3d850d0c",
+    "LR.Filtered": "defe8eaa-5d6a-4a29-861d-0afe6da83fd1",
+    "PEQ.82": "07229bd3-7e88-4272-92d0-68be3783cb98",
+    "PEQ.530": "bdd13383-03e4-42b1-a3a7-735949cb7176",
+    "PEQ.both": "89040b49-4c77-46e6-bea6-346ac8bbd065",
+    "baseline": {
+      "L": "e5f823d9-c5f0-40b5-9660-3b20b7fb4fdb",
+      "R": "bc7bb8c9-1ab9-4733-9715-f27c69e052e1",
+      "LR": "010cd0dd-0eb3-4dbf-b5d3-6807ff001101"
+    },
+    "individual_variants": {
+      "eq82": {
+        "L": "0a46f156-ac00-4b9a-865e-01cc75654933",
+        "R": "b9ba5b35-14c9-405c-b4a2-25d058aa8234",
+        "LR": "d90bc776-7e6d-4bde-a0d4-a5ece87f8001"
+      },
+      "eq530": {
+        "L": "8ebb67eb-65df-4270-8c71-19f4807ae6a6",
+        "R": "bd9f25d5-7a1d-492f-b68b-91bfe459f8e1",
+        "LR": "6e249254-c62c-4775-9531-29ae8174f5ed"
+      }
+    }
+  }
+}
