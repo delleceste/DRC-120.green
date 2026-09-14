@@ -1,12 +1,12 @@
-* Measurement data measured by REW V5.40 beta 135
+* Measurement data measured by REW V5.40 beta 133
 * Source: 
 * Format: 
-* Dated: Sep 11, 2026, 2:03:53 PM
+* Dated: Sep 12, 2026, 4:18:59 PM
 * REW Settings:
 *  C-weighting compensation: Off
 *  Target level: 75.0 dB
-* Note: ; Copy of L.0 10 sept 2026  Position MLP 4.18m from front wall 3.32m from R and L speaker  1.20m speakers to front wall marker: green 2 screen panels prolongation - new setup 1.20m speakers to front wall marker: green DAC level -29dB MIC HEIGHT: 1.000m mic boom arm height: 1.040 -12dBFS OKTO -28dB DELAY 0.0001 ms (0.03 mm, 0 in) using estimated IR delay relative to Acoustic reference played from DAC8STEREO L with no timing offset Clock adjustment: -15.1 ppm
-* Measurement: L
+* Note: ; Copy of L.0 10 sept 2026  Position MLP 4.18m from front wall 3.32m from R and L speaker  1.20m speakers to front wall marker: green 2 screen panels prolongation - new setup DAC level -29dB MIC HEIGHT: 1.000m mic boom arm height: 1.040 -12dBFS OKTO -28dB DELAY 0.0001 ms (0.03 mm, 0 in) using estimated IR delay relative to Acoustic reference played from DAC8STEREO L with no timing offset Clock adjustment: -15.1 ppm
+* Measurement: L.nofdw.clean-fdw6
 * Smoothing: None
 * Frequency Step: 0.3662109 Hz
 * Start Frequency: 15.014648 Hz
