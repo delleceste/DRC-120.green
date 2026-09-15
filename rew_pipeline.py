@@ -413,10 +413,21 @@ def write_freq_text(client, uuid, path, calibration_freq_hz=100.0):
     """
     summary = client.get(f'/measurements/{uuid}')
     notes_text = summary['notes'] or ''
-    fs, samples, _ = client.impulse_response(uuid, windowed=False, normalised=False, unit='percent')
+    fs, samples, start_time = client.impulse_response(
+        uuid, windowed=False, normalised=False, unit='percent')
     n = len(samples)
     freqs = np.fft.rfftfreq(n, 1 / fs)
-    spectrum = np.fft.rfft(samples)
+    # `samples[0]` sits at `start_time` on REW's own time axis, not at t=0 --
+    # for a sweep measurement REW leaves roughly a second of pre-arrival
+    # buffer, so start_time is about -1 s. A plain rfft of that buffer
+    # therefore references the phase to the *start of the buffer*, adding a
+    # ~1 s bulk delay: about one full 360 deg wrap per hertz, which turns
+    # every plotted phase curve into noise and makes any smoothing of it
+    # (circular mean over a fractional-octave band) average to ~0. REW's own
+    # Phase graph references t=0, so shift the spectrum back onto that axis
+    # -- the same correction write_filter_text() already applies with its
+    # WAV's peak sample. Magnitude is unaffected.
+    spectrum = np.fft.rfft(samples) * np.exp(-2j * np.pi * freqs * start_time)
     raw_db = 20 * np.log10(np.maximum(np.abs(spectrum), 1e-30))
     phase_deg = np.degrees(np.angle(spectrum))
 
@@ -427,7 +438,8 @@ def write_freq_text(client, uuid, path, calibration_freq_hz=100.0):
     offset_db = float(mag0[cal_idx] - raw_db[raw_idx])
 
     _write_rew_text(path, freqs, raw_db + offset_db, phase_deg,
-                     note=f'source UUID {uuid}, calibrated to its own SPL at {calibration_freq_hz:g} Hz',
+                     note=f'source UUID {uuid}, calibrated to its own SPL at {calibration_freq_hz:g} Hz, '
+                          f'phase referenced to REW t=0 (IR start {start_time:.6f} s)',
                      notes_text=notes_text, measurement=summary.get('title'), dated=summary.get('date'))
     return path
 
