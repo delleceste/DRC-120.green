@@ -15,7 +15,7 @@ inversion over 80–225 Hz, and X801 crossover correction. The band limits have
 transition regions; they are not abrupt switches.
 
 The finished filters under
-`output/clean-fdw6/clean-fdw6.txts/` pass `../DRC-doc/drc_acceptance.py`.
+`output/clean-fdw6/clean-fdw6.txts/` pass `../DRC-doc/tools/drc_acceptance.py`.
 The left filter's 79 Hz gated-tone tail is 92 ms against a 103 ms limit, with
 a 13 ms interquartile spread, so the margin is modest.
 
@@ -107,7 +107,7 @@ channels. If both experiments are retained, cascade both PEQs.
 X801 is already included in the existing FLX/FRX filters. Do not add it again.
 
 Export the combined filters at 48 kHz with appropriate impulse alignment and
-length, and run `../DRC-doc/drc_acceptance.py` on the actual final WAVs before
+length, and run `../DRC-doc/tools/drc_acceptance.py` on the actual final WAVs before
 use. The 82 Hz experiment particularly needs this check because of the existing
 79 Hz tail margin. The acceptance script's sharpness and group-delay checks stop
 at 200 Hz, so its PASS alone does not validate the 530 Hz experiment; inspect
