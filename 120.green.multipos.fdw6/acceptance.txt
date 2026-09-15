@@ -1,0 +1,58 @@
+========================================================================
+120.green.multipos.fdw6/DRC-120.green/120.green.120.green.multipos.fdw6.txts/FLX-trimmed-48k.wav
+  Tail estimator v2: sustained settling over 9 gate phases, judged as
+  control + 100 ms.  Build-quality heuristic, not an audibility limit.
+  131072 taps @ 48000 Hz = 2731 ms   peak at 8192 (170.7 ms latency)
+  FFT bin = 0.3662 Hz    pre-peak energy 31.70 %
+  PASS sharpest feature < 200 Hz  : Q 9.0  (20.53 Hz wide at 183.75 Hz, 56.1 bins)
+       threshold Q <= 12   (bins are length-dependent, reported for reference only)
+  PASS group delay 20-200 Hz     : +5.2 ms at 78.74 Hz
+       threshold <= 10 ms
+  PASS gated-tone tails         : all within limits
+       tone           tail  spread   control    excess   allowed
+         28.7 Hz       134      73      132        +1      100  <-- noisy
+         40.0 Hz        94      52       84       +11      100  <-- noisy
+         51.2 Hz        75      29       66        +9      100
+         63.0 Hz        74      28       47       +27      100
+         79.0 Hz       115      15       36       +79      100
+        100.0 Hz        53      28       25       +27      100  <-- noisy
+        116.5 Hz        53       3       21       +32      100
+        128.2 Hz        52       3       15       +37      100
+        145.5 Hz        50       8       12       +38      100
+        180.0 Hz        40       1        6       +35      100
+       All ms.  tail = median over 9 gate phases; spread = nearest-rank
+       IQR.  excess = tail - control, the quantity judged; a filter that
+       adds no ringing of its own scores 0.  allowed = 100 ms, widened at
+       the lowest tones to the four-period resolution floor.
+       Censored trials remain in statistics; noisy flags do not override the verdict.
+  RESULT: PASS
+========================================================================
+120.green.multipos.fdw6/DRC-120.green/120.green.120.green.multipos.fdw6.txts/FRX-trimmed-48k.wav
+  Tail estimator v2: sustained settling over 9 gate phases, judged as
+  control + 100 ms.  Build-quality heuristic, not an audibility limit.
+  131072 taps @ 48000 Hz = 2731 ms   peak at 8192 (170.7 ms latency)
+  FFT bin = 0.3662 Hz    pre-peak energy 31.78 %
+  PASS sharpest feature < 200 Hz  : Q 8.5  (9.57 Hz wide at 81.48 Hz, 26.1 bins)
+       threshold Q <= 12   (bins are length-dependent, reported for reference only)
+  PASS group delay 20-200 Hz     : +7.2 ms at 95.76 Hz
+       threshold <= 10 ms
+  PASS gated-tone tails         : all within limits
+       tone           tail  spread   control    excess   allowed
+         28.7 Hz       131      77      132        -2      100  <-- noisy
+         40.0 Hz        95      52       84       +12      100  <-- noisy
+         51.2 Hz        65      37       66        -1      100  <-- noisy
+         63.0 Hz        54      18       47        +7      100
+         79.0 Hz        98       9       36       +62      100
+        100.0 Hz       105      18       25       +80      100
+        116.5 Hz        64      26       21       +43      100
+        128.2 Hz        53      12       15       +38      100
+        145.5 Hz        51       2       12       +39      100
+        180.0 Hz        39       3        6       +33      100
+       All ms.  tail = median over 9 gate phases; spread = nearest-rank
+       IQR.  excess = tail - control, the quantity judged; a filter that
+       adds no ringing of its own scores 0.  allowed = 100 ms, widened at
+       the lowest tones to the four-period resolution floor.
+       Censored trials remain in statistics; noisy flags do not override the verdict.
+  RESULT: PASS
+
+ALL PASS
