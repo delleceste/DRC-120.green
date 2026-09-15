@@ -1,6 +1,7 @@
 # Project defaults for this room (120.green, multi-point FDW build). Picked
-# up automatically by rew_pipeline.py -- no --config flag needed. See
-# rew_pipeline.example.toml for the full field reference, and
+# up automatically when ../DRC-doc/tools/rew-pipeline/rew_pipeline.py is run from
+# this directory -- no --config flag needed. See
+# ../DRC-doc/tools/rew-pipeline/rew_pipeline.example.toml for the full field reference, and
 # ../DRC-doc/REW-INVERSION.md, "Part V -- Automating the procedure".
 #
 # Everything here can still be overridden on the command line for a
@@ -30,7 +31,7 @@ cycles = 8.0
 target_title = "Target.harman.fuller"
 lf_cutoff_hz = 10.0
 lf_slope_db_per_oct = 24.0
-house_curve = "../DRC-doc/house-curve-harman-fuller.txt"
+house_curve = "../DRC-doc/tools/housecurve/house-curve-harman-fuller.txt"
 
 [minphase1]
 lf_tail_corner_hz = 16.0

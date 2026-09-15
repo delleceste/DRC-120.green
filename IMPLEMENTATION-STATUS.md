@@ -5,10 +5,10 @@ cross-checked with `../open-media-drc/scripts/new_filter_design.py --dry-run`.
 
 ## What it does
 
-`rew_pipeline.py` drives REW's own REST API through every step of
+`../DRC-doc/tools/rew-pipeline/rew_pipeline.py` drives REW's own REST API through every step of
 `../DRC-doc/REW-INVERSION.md` (window/FDW, spatial average, minimum phase,
 divide, minimum phase again, bake in the crossover, trim) for a chosen FDW
-cycle count, then runs `../DRC-doc/drc_acceptance.py` on the result. It does
+cycle count, then runs `../DRC-doc/tools/drc_acceptance.py` on the result. It does
 **not** reimplement REW's FDW windowing or minimum-phase transform -- it asks
 the running REW instance to do each step, the same operations a person would
 trigger from the GUI, and reads back the resulting impulse responses. This
@@ -18,13 +18,13 @@ still present for reference only -- their empirical Gaussian FDW width and
 independent minimum-phase code were never validated against REW, and are not
 part of the current approach).
 
-- `rew_client.py` -- REST client. Every mutating call returns the affected
+- `../DRC-doc/tools/rew-pipeline/rew_client.py` -- REST client. Every mutating call returns the affected
   measurement's **UUID**, never its index: index numbers shift on every
   add/delete, which happens throughout this pipeline (see the note in
   `find()`'s docstring -- getting this wrong once produced a real bug where a
   stored reference silently pointed at the wrong measurement after a later
   deletion).
-- `rew_pipeline.py` -- the pipeline itself, `output/` -- example runs.
+- `../DRC-doc/tools/rew-pipeline/rew_pipeline.py` -- the pipeline itself, `output/` -- example runs.
 
 ## Input naming convention
 
@@ -70,12 +70,12 @@ guessed -- these are every DSP flag's default:
 
 ## Validated results (FDW 8, reproducing the reference build)
 
-`./rew_pipeline.py --fdw-cycles 8 --tag fdw8 --output output/fdw8 --center-l L.0 --center-r R.0 --pos-l-pattern 'L 120.green.{n}' --pos-r-pattern 'R 120.green.{n}' --target-title Target.auto`
+`../DRC-doc/tools/rew-pipeline/rew_pipeline.py --fdw-cycles 8 --tag fdw8 --output output/fdw8 --center-l L.0 --center-r R.0 --pos-l-pattern 'L 120.green.{n}' --pos-r-pattern 'R 120.green.{n}' --target-title Target.auto`
 
 - Step 6a (|H| preserved by minimum phase): LX-MP 0.026 dB, RX-MP 0.072 dB,
   SUM-SP-MP 0.324 dB max deviation over 20-225 Hz -- all near the guide's
   "~0.03 dB" expectation.
-- `drc_acceptance.py`: both channels PASS sharpest-feature and group-delay;
+- `../DRC-doc/tools/drc_acceptance.py`: both channels PASS sharpest-feature and group-delay;
   both FAIL the gated-tone test (L 118 ms vs 103 ms limit at 79 Hz, R 107 ms
   vs 100 ms limit at 100 Hz) -- matching the previously-recorded reference
   result (117 ms / 103 ms) to a few ms, with an auto-built target instead of
@@ -108,7 +108,7 @@ output/fdw8/                              --output: one run, and only one run
       L.filtered.txt  R.filtered.txt  LR.filtered.txt   raw (no-FDW) centre capture x
                                            its filter, and their vector average
   manifest.json                           parameters + every measurement UUID
-  acceptance.txt                          drc_acceptance.py output
+  acceptance.txt                          tools/drc_acceptance.py output
 ```
 
 The three directory names are the design's identity, not decoration: the web
