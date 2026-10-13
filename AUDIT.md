@@ -143,7 +143,7 @@ A 131072-sample export is preferable if REW permits it.
 
 ## Acceptance results
 
-The current green filters were tested with `../DRC-doc/drc_acceptance.py`.
+The current green filters were tested with `../DRC-doc/tools/drc_acceptance.py`.
 
 | Test | Green L | Green R |
 |---|---:|---:|
