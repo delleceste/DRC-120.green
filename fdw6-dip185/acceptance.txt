@@ -1,0 +1,58 @@
+========================================================================
+fdw6-dip185/DRC-120.green/120.green.fdw6-dip185.txts/FLX-trimmed-48k.wav
+  Tail estimator v2: sustained settling over 9 gate phases, judged as
+  control + 100 ms.  Build-quality heuristic, not an audibility limit.
+  131072 taps @ 48000 Hz = 2731 ms   peak at 8192 (170.7 ms latency)
+  FFT bin = 0.3662 Hz    pre-peak energy 31.41 %
+  PASS sharpest feature < 200 Hz  : Q 9.0  (20.41 Hz wide at 183.75 Hz, 55.7 bins)
+       threshold Q <= 12   (bins are length-dependent, reported for reference only)
+  FAIL group delay 20-200 Hz     : -106.0 ms at 42.76 Hz
+       threshold <= 10 ms
+  FAIL gated-tone tails         : 614 ms at 40 Hz, +430 ms past its limit
+       tone           tail  spread   control    excess   allowed
+         28.7 Hz       306     150      132      +174      100  <-- FAIL
+         40.0 Hz       614     386       84      +530      100  <-- FAIL  (noisy)
+         51.2 Hz       124      34       66       +58      100
+         63.0 Hz       107      31       47       +61      100
+         79.0 Hz       115      12       36       +79      100
+        100.0 Hz        80       3       25       +54      100
+        116.5 Hz        78      25       21       +57      100
+        128.2 Hz        58      23       15       +43      100
+        145.5 Hz        56       4       12       +43      100
+        180.0 Hz        42       1        6       +36      100
+       All ms.  tail = median over 9 gate phases; spread = nearest-rank
+       IQR.  excess = tail - control, the quantity judged; a filter that
+       adds no ringing of its own scores 0.  allowed = 100 ms, widened at
+       the lowest tones to the four-period resolution floor.
+       Censored trials remain in statistics; noisy flags do not override the verdict.
+  RESULT: FAIL
+========================================================================
+fdw6-dip185/DRC-120.green/120.green.fdw6-dip185.txts/FRX-trimmed-48k.wav
+  Tail estimator v2: sustained settling over 9 gate phases, judged as
+  control + 100 ms.  Build-quality heuristic, not an audibility limit.
+  131072 taps @ 48000 Hz = 2731 ms   peak at 8192 (170.7 ms latency)
+  FFT bin = 0.3662 Hz    pre-peak energy 31.46 %
+  PASS sharpest feature < 200 Hz  : Q 8.1  (10.00 Hz wide at 81.39 Hz, 27.3 bins)
+       threshold Q <= 12   (bins are length-dependent, reported for reference only)
+  FAIL group delay 20-200 Hz     : -106.0 ms at 42.76 Hz
+       threshold <= 10 ms
+  FAIL gated-tone tails         : 614 ms at 40 Hz, +430 ms past its limit
+       tone           tail  spread   control    excess   allowed
+         28.7 Hz       305     151      132      +173      100  <-- FAIL
+         40.0 Hz       614     368       84      +530      100  <-- FAIL  (noisy)
+         51.2 Hz       124      17       66       +58      100
+         63.0 Hz       109      31       47       +62      100
+         79.0 Hz        92      11       36       +56      100
+        100.0 Hz       114      19       25       +88      100
+        116.5 Hz        91      20       21       +70      100
+        128.2 Hz        71      17       15       +56      100
+        145.5 Hz        53       6       12       +41      100
+        180.0 Hz        37       1        6       +31      100
+       All ms.  tail = median over 9 gate phases; spread = nearest-rank
+       IQR.  excess = tail - control, the quantity judged; a filter that
+       adds no ringing of its own scores 0.  allowed = 100 ms, widened at
+       the lowest tones to the four-period resolution floor.
+       Censored trials remain in statistics; noisy flags do not override the verdict.
+  RESULT: FAIL
+
+FAILURES PRESENT

@@ -1,0 +1,108 @@
+{
+  "base_design": "120.green.multipos.fdw6",
+  "design": "fdw6-sim185",
+  "geometry": "120.green",
+  "peq_requested": [
+    [
+      42.8,
+      -17.3,
+      6.06
+    ],
+    [
+      37.6,
+      -8.9,
+      3.56
+    ],
+    [
+      33.9,
+      -1.5,
+      8.0
+    ],
+    [
+      27.0,
+      -3.9,
+      1.21
+    ],
+    [
+      52.6,
+      5.0,
+      3.0
+    ],
+    [
+      77.8,
+      3.9,
+      0.7
+    ],
+    [
+      92.6,
+      -4.4,
+      1.65
+    ],
+    [
+      132.4,
+      -2.8,
+      5.05
+    ],
+    [
+      201.1,
+      -3.5,
+      5.47
+    ]
+  ],
+  "peq_rew_retained": [
+    [
+      42.8,
+      -17.3,
+      6.06
+    ],
+    [
+      37.6,
+      -8.9,
+      3.56
+    ],
+    [
+      33.9,
+      -1.5,
+      8.0
+    ],
+    [
+      27.0,
+      -3.9,
+      1.21
+    ],
+    [
+      52.6,
+      5.0,
+      3.0
+    ],
+    [
+      77.8,
+      3.9,
+      0.7
+    ],
+    [
+      92.6,
+      -4.4,
+      1.65
+    ],
+    [
+      132.5,
+      -2.8,
+      5.05
+    ],
+    [
+      201.0,
+      -3.5,
+      5.47
+    ]
+  ],
+  "method": "FLX/FRX-trimmed (official) x REW PEQ measurement -> Trim IR to windows; PEQ fitted to (185 cm LR after cut-only correction to house curve) - (120.green LR.filtered), 1/6-oct <50 Hz, 1/3-oct above",
+  "uuids": {
+    "PEQ": "5723e4be-a948-480c-b2e5-a40d261eb47e",
+    "FLX-trimmed": "82105232-5ef9-47d6-8529-263d54d68763",
+    "FRX-trimmed": "3f8b1cb2-e80c-4925-8ecf-0f227c880586",
+    "L.filtered": "937ebf80-69b8-4f4a-b47c-9faac1a001ea",
+    "R.filtered": "ca6e8071-ceb1-42fb-bc0d-dda74f7fb464",
+    "LR.filtered": "ebc9d429-bbca-4152-867d-391ebe30ea51"
+  }
+}
